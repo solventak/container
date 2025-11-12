@@ -371,7 +371,7 @@ public actor SandboxService {
             networks = ctr.attachments
             cs = ContainerSnapshot(
                 configuration: ctr.config,
-                status: RuntimeStatus.running,
+                status: .running,
                 networks: networks
             )
         }

@@ -22,7 +22,7 @@ import Foundation
 
 extension Application {
     static func ensureRunning(container: ClientContainer) throws {
-        if container.status != .running {
+        if container.status != .running(startedAt: nil) {
             throw ContainerizationError(.invalidState, message: "container \(container.id) is not running")
         }
     }

@@ -45,7 +45,7 @@ public struct ClientContainer: Sendable, Codable {
 
     package init(configuration: ContainerConfiguration) {
         self.configuration = configuration
-        self.status = .stopped
+        self.status = .stopped(stoppedAt: nil)
         self.networks = []
     }
 

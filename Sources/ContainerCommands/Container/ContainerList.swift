@@ -48,7 +48,7 @@ extension Application {
         }
 
         private func createHeader() -> [[String]] {
-            [["ID", "IMAGE", "OS", "ARCH", "STATE", "ADDR", "CPUS", "MEMORY", "CREATED"]]
+            [["ID", "IMAGE", "OS", "ARCH", "STATE", "ADDR", "CPUS", "MEMORY", "CREATED", "STARTED"]]
         }
 
         private func printContainers(containers: [ClientContainer], format: ListFormat) throws {
@@ -97,16 +97,24 @@ extension ClientContainer {
             createdAtString = "-"
         }
 
+        var startedAtString = "-"
+        if case .running(let startedAtDate) = self.status {
+            if let startedAtDate {
+                startedAtString = DateFormatter.metadataFormatter.string(from: startedAtDate)
+            }
+        }
+
         return [
             self.id,
             self.configuration.image.reference,
             self.configuration.platform.os,
             self.configuration.platform.architecture,
-            self.status.rawValue,
+            self.status.stateName,
             self.networks.compactMap { try? CIDRAddress($0.address).address.description }.joined(separator: ","),
             "\(self.configuration.resources.cpus)",
             "\(self.configuration.resources.memoryInBytes / (1024 * 1024)) MB",
             createdAtString,
+            startedAtString,
         ]
     }
 }
